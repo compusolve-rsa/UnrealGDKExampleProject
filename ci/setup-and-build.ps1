@@ -188,7 +188,7 @@ pushd "$exampleproject_home"
             "-prereqs", `
             "-nodebuginfo", `
             "-targetplatform=Android", `
-            "-cookflavor=ASTC", `
+            "-cookflavor=ETC2", `
             "-build", `
             "-utf8output", `
             "-cmdline=`"${cmdline}`""

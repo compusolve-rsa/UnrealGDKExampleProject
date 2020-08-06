@@ -93,7 +93,7 @@ def get_gcs_and_local_path(app_platform, engine_commit_formatted_hash):
             localfilename = 'GDKShooter-armv7-es2.apk'
         else:
             localfilename = 'GDKShooter-armv7.apk'
-        filename = '%s/Android_ASTC/%s' % (path, localfilename)
+        filename = '%s/Android_ETC2/%s' % (path, localfilename)
         agentplatform = 'windows'
     else:
         localfilename = 'GDKShooter.ipa'
