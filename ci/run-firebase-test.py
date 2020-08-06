@@ -17,7 +17,7 @@ import sys
 import common
 import platform
 
-# Base on artifact_paths of nightly.android.firebase.test.yaml and nightly.ios.firebase.test.yaml
+# Based on artifact_paths in nightly.android.firebase.test.yaml and nightly.ios.firebase.test.yaml
 FIREBASE_LOG_DIR="firebase_log"
 
 def switch_gcloud_project(project_id):

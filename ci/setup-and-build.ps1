@@ -127,7 +127,7 @@ pushd "$exampleproject_home"
             "Development", `
             "GDKShooter.uproject", `
             "-nocompile"
-        )       
+        )
         $build_client_handle = $build_client_proc.Handle
         Wait-Process -InputObject $build_client_proc
         if ($build_client_proc.ExitCode -ne 0) {
@@ -143,7 +143,7 @@ pushd "$exampleproject_home"
             "Development", `
             "GDKShooter.uproject", `
             "-nocompile"
-        )       
+        )
         $build_server_handle = $build_server_proc.Handle
         Wait-Process -InputObject $build_server_proc
 

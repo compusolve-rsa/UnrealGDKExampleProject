@@ -33,7 +33,7 @@ class CustomWriter:
         self.output_file.write(what.replace('\n\t','\n'))
         
 
-# modify runtime settings before cook
+# Modify runtime settings before cook
 def change_runtime_settings(project_home):
     default_engine_ini = os.path.join(project_home, 'Game', 'Config', 'DefaultEngine.ini')
     config = configparser.ConfigParser(strict=False, dict_type=MultiOrderedDict, interpolation=CustomInterpolation())
