@@ -88,7 +88,11 @@ def get_gcs_and_local_path(app_platform, engine_commit_formatted_hash):
     localfilename = ''
     path = 'cooked-%s' % app_platform
     if app_platform == 'android':
-        localfilename = 'GDKShooter-armv7-es2.apk'
+        # UnrealEngine for 4.24-SpatialOSUnrealGDK have different android file name
+        if '4_24' in engine_commit_formatted_hash:
+            localfilename = 'GDKShooter-armv7-es2.apk'
+        else:
+            localfilename = 'GDKShooter-armv7.apk'
         filename = '%s/Android_ASTC/%s' % (path, localfilename)
         agentplatform = 'windows'
     else:
