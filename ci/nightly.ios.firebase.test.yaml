@@ -13,7 +13,7 @@ bk_interrupted_by_signal: &bk_interrupted_by_signal
   exit_status: 15
   limit: 3
 
-  linux: &linux
+script_runner: &script_runner
   agents:
     - "agent_count=8"
     - "capable_of_building=platform"
@@ -33,7 +33,7 @@ bk_interrupted_by_signal: &bk_interrupted_by_signal
 steps:
   - label: "firebase-test-ios-connect-to-spatialos-ENGINE_COMMIT_HASH_PLACEHOLDER"
     command: "python ci/run-firebase-test.py ios ENGINE_COMMIT_FORMATTED_HASH_PLACEHOLDER"
-    <<: *linux
+    <<: *script_runner
     artifact_paths:
       - "firebase_log/*.txt"
     depends_on:
