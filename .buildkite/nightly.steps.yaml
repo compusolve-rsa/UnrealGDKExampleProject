@@ -33,6 +33,6 @@ script_runner: &script_runner
 steps:
   - label: "show-gcloud-components-list"
     commands: 
-      - "gcloud-components-list"
+      - "gcloud components list"
     <<: *script_runner
 
