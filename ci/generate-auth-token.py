@@ -36,7 +36,6 @@ def generate_auth_token(project_name):
     common.set_buildkite_meta_data('auth-token', url[0].decode('ASCII'))
 
 
-
 if __name__ == "__main__":
     gdk_repo = common.get_environment_variable('GDK_REPOSITORY', 'git@github.com:spatialos/UnrealGDK.git')
     gdk_branch_name = common.get_environment_variable('GDK_BRANCH', 'master')
@@ -48,7 +47,7 @@ if __name__ == "__main__":
     common.log('generate-project-name')
     engine_version_count = common.get_buildkite_meta_data('engine-version-count')
     now = datetime.now()
-    for index in range(0, int(engine-version-count)):
+    for index in range(0, int(engine_version_count)):
         index_str = '%d' % (index + 1)
         name = 'deployment-name-%s' % index_str
         value = 'exampleproject_%s_%s_%s' % (index_str, now.strftime('%m%d_%M%M%S'), gdk_commit_hash)

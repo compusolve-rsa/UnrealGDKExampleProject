@@ -3,7 +3,7 @@ import os
 import subprocess
 
 # For local debug without BuildKite
-DEBUG = True
+DEBUG = False
 
 def log(msg, expand=False):
     if (expand):
@@ -51,6 +51,7 @@ def get_buildkite_meta_data(name):
 def get_environment_variable(name, default_value):
     return os.environ.get(name) or default_value
 
+
 # For automatic pushd and popd
 class PushdContext:
     cwd = None
@@ -66,6 +67,7 @@ class PushdContext:
 
     def __exit__(self, type, value, tb):
         os.chdir(self.original_dir)
+
 
 def pushd(dirname):
     return PushdContext(dirname)

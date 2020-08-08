@@ -13,28 +13,26 @@ bk_interrupted_by_signal: &bk_interrupted_by_signal
   exit_status: 15
   limit: 3
 
-windows: &windows
+script_runner: &script_runner
   agents:
-    - "agent_count=1"
-    - "capable_of_building=gdk-for-unreal"
+    - "agent_count=8"
+    - "capable_of_building=platform"
     - "environment=production"
     - "machine_type=quarter"
     - "permission_set=builder"
-    - "platform=windows"
+    - "platform=linux"
+    - "queue=${CI_LINUX_BUILDER_QUEUE:-v4-2019-12-12-bk5225-daecba805768d787}"
     - "scaler_version=2"
-    - "queue=${CI_WINDOWS_BUILDER_QUEUE:-v4-20-08-03-061331-bk13849-b66f334e-d}"
-    - "boot_disk_size_gb=500"
-  timeout_in_minutes: 60
+    - "working_hours_time_zone=london"
   retry:
     automatic:
       - <<: *agent_transients
       - <<: *bk_system_error
       - <<: *bk_interrupted_by_signal
-  plugins:
-    - ca-johnson/taskkill#v4.1: ~
+
 
 steps:
   - label: "generate-auth_token-and-deployment-name"
-    command: "powershell -NoProfile -NonInteractive -InputFormat Text -Command ./ci/generate-auth-token.ps1"
-    <<: *windows 
-    key: "generate-auth_token"
+    command: "python ci/generate-auth-token.py"
+    <<: *script_runner 
+    key: "generate-auth-token"
