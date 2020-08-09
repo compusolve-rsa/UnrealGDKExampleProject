@@ -60,6 +60,9 @@ env:
     SPATIAL_RUNTIME_VERSION: "0.4.3" ## the runtime version of SpatialOS
 
 steps:
-  - label: "slack-notify"
+  - label: "slack-notify-linux"
     command: "python3 ci/slack-notify.py"
     <<: *script_runner
+  - label: "slack-notify-windows"
+    command: "powershell -NoProfile -NonInteractive -InputFormat Text -Command ci/slack-notify.ps1"
+    <<: *windows
