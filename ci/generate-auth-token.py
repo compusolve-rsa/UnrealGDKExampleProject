@@ -29,6 +29,10 @@ def generate_auth_token(project_name):
         '--project_name=%s' % project_name
     ]
     res = common.run_shell(cmds)
+    for line in res.stderr.readlines():
+        utf8 = line.decode('UTF-8').strip()
+        if len(utf8) > 0:
+            print(utf8)
     utf8_string = res.stdout.read().decode('UTF-8')
     print(utf8_string)
     url = re.findall(r'token_secret:\\"(.+)\\"', utf8_string)

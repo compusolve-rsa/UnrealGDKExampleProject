@@ -23,16 +23,15 @@ def run_shell(cmds):
 
 
 def set_buildkite_meta_data(name, value):
-    if DEBUG:
-        print('set meta-data %s=%s' % (name, value))
-    else:
+    print('set meta-data %s=%s' % (name, value))
+    if not DEBUG:
         args = [
             'meta-data',
             'set',
             '"%s"' % name,
             '"%s"' % value
         ]
-        run_command('buildkite-agent', args)
+        run_command('buildkite-agent', ' '.join(args))
 
 
 def get_buildkite_meta_data(name):
