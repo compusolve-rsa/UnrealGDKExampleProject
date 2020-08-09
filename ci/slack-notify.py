@@ -25,15 +25,17 @@ def slack_notify(channel, slack_webhook_url):
     elif firebase_test == 'true':
         slack_text = ':night_with_stars: Firebase Connection Tests for the *Example Project* succeeded.'
     else:
-        slack_text = '*Example Project* build by $env:BUILDKITE_BUILD_CREATOR succeeded.'
+        build_creator = common.get_environment_variable('BUILDKITE_BUILD_CREATOR', '')
+        slack_text = '*Example Project* build by %s succeeded.' % build_creator
     build_message_len = min(64, len(build_message))
     formatted_build_message = build_message[0:build_message_len]
+    build_url = common.get_environment_variable('BUILDKITE_BUILD_URL', '')
     json_message = {
         'text' : slack_text,
         'channel' : channel,
         'attachments' : [
             {
-                'fallback' : 'Find build here: $build_url.',
+                'fallback' : 'Find build here: %s.' % build_url,
                 'color' : 'good',
                 'fields' : [
                     {
@@ -68,7 +70,7 @@ def slack_notify(channel, slack_webhook_url):
                     {
                         'type' : 'button',
                         'text' : ':buildkite: BK build',
-                        'url' : common.get_environment_variable('BUILDKITE_BUILD_URL', ''),
+                        'url' : build_url,
                         'style' : 'primary'
                     }
                 ]
@@ -133,4 +135,3 @@ if __name__ == '__main__':
     common.log('slack-notify')
     slack_notify(slack_channel, slack_webhook_url)
     
-
