@@ -104,6 +104,8 @@ def slack_notify(channel, slack_webhook_url):
                                 'style' : 'primary'
                             }
             json_message['attachments'][0]['actions'].append(deployment_button)
+    print(slack_webhook_url)
+    print(json_message)
     res = requests.post(slack_webhook_url, data = json_message)
     print(res)
 
