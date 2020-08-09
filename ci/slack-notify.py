@@ -17,8 +17,9 @@ if __name__ == "__main__":
     gdk_commit_hash = common.get_buildkite_meta_data("gdk_commit_hash")
 
     cmds = [
-        'imp-c',
-        'secrets read',
+        'imp-ci',
+        'secrets',
+        'read',
         '--environment=production',
         '--buildkite-org=improbable',
         '--secret-type=slack-webhook',
