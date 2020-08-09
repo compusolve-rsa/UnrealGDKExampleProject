@@ -4,6 +4,7 @@ import sys
 import json
 import common
 import requests
+import collections
 
 
 def slack_notify(channel, slack_webhook_url):
@@ -32,50 +33,50 @@ def slack_notify(channel, slack_webhook_url):
     build_url = common.get_environment_variable('BUILDKITE_BUILD_URL', '')
     json_message = {
         'text' : slack_text,
-        'channel' : channel,
-        'attachments' : [
-            {
-                'fallback' : 'Find build here: %s.' % build_url,
-                'color' : 'good',
-                'fields' : [
-                    {
-                        'title' : 'Build Message',
-                        'value' : formatted_build_message,
-                        'short' : 'true'
-                    },
-                    {
-                        'title' : 'Example Project branch',
-                        'value' : common.get_environment_variable('BUILDKITE_BRANCH', ''),
-                        'short' : 'true'
-                    },
-                    {
-                        'title' : 'GDK branch',
-                        'value' : gdk_branch_name,
-                        'short' : 'true'
-                    }    
-                ],
-                'actions' : [
-                    {
-                        'type' : 'button',
-                        'text' : ':github: Project commit',
-                        'url' : project_commit_url,
-                        'style' : 'primary'
-                    },
-                    {
-                        'type' : 'button',
-                        'text' : ':github: GDK commit',
-                        'url' : gdk_commit_url,
-                        'style' : 'primary'
-                    },
-                    {
-                        'type' : 'button',
-                        'text' : ':buildkite: BK build',
-                        'url' : build_url,
-                        'style' : 'primary'
-                    }
-                ]
-            }
-        ]
+        'channel' : channel
+        # 'attachments' : [
+        #     {
+        #         'fallback' : 'Find build here: %s.' % build_url,
+        #         'color' : 'good',
+        #         'fields' : [
+        #             {
+        #                 'title' : 'Build Message',
+        #                 'value' : formatted_build_message,
+        #                 'short' : 'true'
+        #             },
+        #             {
+        #                 'title' : 'Example Project branch',
+        #                 'value' : common.get_environment_variable('BUILDKITE_BRANCH', ''),
+        #                 'short' : 'true'
+        #             },
+        #             {
+        #                 'title' : 'GDK branch',
+        #                 'value' : gdk_branch_name,
+        #                 'short' : 'true'
+        #             }    
+        #         ],
+        #         'actions' : [
+        #             {
+        #                 'type' : 'button',
+        #                 'text' : ':github: Project commit',
+        #                 'url' : project_commit_url,
+        #                 'style' : 'primary'
+        #             },
+        #             {
+        #                 'type' : 'button',
+        #                 'text' : ':github: GDK commit',
+        #                 'url' : gdk_commit_url,
+        #                 'style' : 'primary'
+        #             },
+        #             {
+        #                 'type' : 'button',
+        #                 'text' : ':buildkite: BK build',
+        #                 'url' : build_url,
+        #                 'style' : 'primary'
+        #             }
+        #         ]
+        #     }
+        # ]
     }
     if mac_build == 'true':
         ios_message = {
@@ -93,22 +94,22 @@ def slack_notify(channel, slack_webhook_url):
         json_message['attachments'][0]['fields'].insert(0, android_message)
     launch_deployment = common.get_environment_variable('START_DEPLOYMENT', 'true')
     engine_version_count = '1' # common.get_buildkite_meta_data('engine-version-count')
-    if launch_deployment == 'true':
-        for i in range(0, int(engine_version_count)):
-            index_str = '%d' % (i + 1)
-            name = 'deployment-name-%s' % index_str
-            deployment_name = name # common.get_buildkite_meta_data(name)
-            deployment_url = 'https://console.improbable.io/projects/%s/deployments/%s/overview' % (project_name, deployment_name)
-            deployment_button = {
-                                'type' : 'button',
-                                'text' : ':cloud: Deployment %s' % index_str,
-                                'url' : deployment_url,
-                                'style' : 'primary'
-                            }
-            json_message['attachments'][0]['actions'].append(deployment_button)
+    # if launch_deployment == 'true':
+    #     for i in range(0, int(engine_version_count)):
+    #         index_str = '%d' % (i + 1)
+    #         name = 'deployment-name-%s' % index_str
+    #         deployment_name = name # common.get_buildkite_meta_data(name)
+    #         deployment_url = 'https://console.improbable.io/projects/%s/deployments/%s/overview' % (project_name, deployment_name)
+    #         deployment_button = {
+    #                             'type' : 'button',
+    #                             'text' : ':cloud: Deployment %s' % index_str,
+    #                             'url' : deployment_url,
+    #                             'style' : 'primary'
+    #                         }
+    #         json_message['attachments'][0]['actions'].append(deployment_button)
     print(slack_webhook_url)
     print(json_message)
-    res = requests.post(slack_webhook_url, data = json_message)
+    res = requests.post(slack_webhook_url, data = collections.OrderedDict(json_message))
     print(res)
 
 
@@ -130,8 +131,10 @@ if __name__ == '__main__':
         utf8 = line.decode('UTF-8').strip()
         if len(utf8) > 0:
             print('%s' % utf8)
-    slack_webhook_url = json.loads(res.stdout.read().decode('UTF-8'))['url']
+    output = res.stdout.read().decode('UTF-8')
+    slack_webhook_url = json.loads(output)['url']
     
+    # slack_webhook_url = 'https://hooks.slack.com/services/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'
     common.log('slack-notify')
     slack_notify(slack_channel, slack_webhook_url)
     
