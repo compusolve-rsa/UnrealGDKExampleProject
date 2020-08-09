@@ -129,6 +129,6 @@ if __name__ == '__main__':
     slack_webhook_url = json.loads(res.stdout.read().decode('UTF-8'))['url']
     
     common.log('slack-notify')
-    slack_notify(slack_channel, 'https://hooks.slack.com/services/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')
+    slack_notify(slack_channel, slack_webhook_url)
     
 
